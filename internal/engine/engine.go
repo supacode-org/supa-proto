@@ -69,6 +69,7 @@ type Engine struct {
 	pool   *fakeip.Pool
 	stack  *tun.Stack
 	stats  *stats.Collector
+	cover  *client.Cover
 	conns  connSet
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -120,15 +121,33 @@ func Start(dev tun.Device, cfg Config) (*Engine, error) {
 		_ = dev.Close()
 		return nil, err
 	}
-	e.logf(LogInfo, "started server=%s mtu=%d doh=%s bootstrap=%s", e.client.Config().Server, cfg.MTU, cfg.DoHURL, cfg.Bootstrap)
+	if cfg.Client.Cover.Enabled {
+		e.cover = e.client.StartCover(e.ctx, client.CoverOptions{
+			RateKbps: cfg.Client.Cover.RateKbps,
+			Log:      cfg.Log,
+			Stats:    coverStats{e.stats},
+		})
+	}
+	e.logf(LogInfo, "started server=%s mtu=%d doh=%s bootstrap=%s cover=%t", e.client.Config().Server, cfg.MTU, cfg.DoHURL, cfg.Bootstrap, cfg.Client.Cover.Enabled)
 	go e.probe()
 	return e, nil
 }
+
+// coverStats forwards cover-manager events to the statistics collector so the
+// app can show cover connections and bytes apart from real flows.
+type coverStats struct{ c *stats.Collector }
+
+func (s coverStats) CoverSessionOpened()     { s.c.AddCoverConn(1) }
+func (s coverStats) CoverSessionClosed()     { s.c.AddCoverConn(-1) }
+func (s coverStats) CoverBytes(up, down int) { s.c.AddCoverBytes(up, down) }
 
 // Close ends every flow, stops the stack, closes the device and drops all
 // mappings.
 func (e *Engine) Close() error {
 	e.cancel()
+	if e.cover != nil {
+		e.cover.Close()
+	}
 	e.conns.closeAll(true)
 	err := e.stack.Close()
 	e.pool.Reset()
@@ -147,6 +166,9 @@ func (e *Engine) NetworkChanged() {
 	e.boot.ClearCache()
 	e.doh.ClearCache()
 	closed := e.conns.closeAll(false)
+	if e.cover != nil {
+		e.cover.NetworkChanged()
+	}
 	e.logf(LogInfo, "network changed, DNS caches cleared, %d connections closed", closed)
 }
 

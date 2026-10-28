@@ -43,6 +43,13 @@ const (
 	FrameUDPOpenResult byte = 10
 	FrameUDPDatagram   byte = 11
 	FrameUDPClose      byte = 12
+	// Cover-traffic frames. A cover session completes the normal handshake and
+	// key confirmation, then sends COVER_OPEN in place of OPEN. It never
+	// carries a real target: both ends generate or discard DATA frames to
+	// produce decoy traffic. Servers that predate these types reject the
+	// unknown frame, which lets a cover-capable client detect and stop.
+	FrameCoverOpen       byte = 13
+	FrameCoverOpenResult byte = 14
 )
 
 type Envelope struct {
@@ -516,7 +523,7 @@ func DecodeFrame(b []byte) (Frame, error) {
 	switch b[1] {
 	case FrameOpen, FrameOpenResult, FrameData, FrameCloseWrite, FrameReset,
 		FramePing, FramePong, FrameKeyConfirm, FrameUDPOpen, FrameUDPOpenResult,
-		FrameUDPDatagram, FrameUDPClose:
+		FrameUDPDatagram, FrameUDPClose, FrameCoverOpen, FrameCoverOpenResult:
 	default:
 		return Frame{}, errors.New("unknown frame type")
 	}
@@ -542,9 +549,17 @@ func DecodeFrame(b []byte) (Frame, error) {
 		if payloadLength != 2 || b[7] != 1 || b[8] != 0 {
 			return Frame{}, errors.New("invalid UDP_OPEN frame")
 		}
+	case FrameCoverOpen:
+		if payloadLength != 3 || b[7] != 1 {
+			return Frame{}, errors.New("invalid COVER_OPEN frame")
+		}
 	case FrameUDPOpenResult, FrameUDPClose:
 		if payloadLength == 0 || payloadLength > 256 {
 			return Frame{}, errors.New("invalid UDP result frame")
+		}
+	case FrameCoverOpenResult:
+		if payloadLength == 0 || payloadLength > 256 {
+			return Frame{}, errors.New("invalid COVER_OPEN_RESULT frame")
 		}
 	case FrameUDPDatagram:
 		if _, _, _, err := ParseUDPDatagram(b[7:]); err != nil {
@@ -555,6 +570,23 @@ func DecodeFrame(b []byte) (Frame, error) {
 }
 
 func UDPOpenPayload() []byte { return []byte{1, 0} }
+
+// CoverOpenPayload encodes a cover-session open. The byte is a version marker
+// and the uint16 is the per-session target wire rate in kbps, which the server
+// uses to pace generated cover data (and clamps to its own limit).
+func CoverOpenPayload(rateKbps uint16) []byte {
+	b := []byte{1, 0, 0}
+	binary.BigEndian.PutUint16(b[1:], rateKbps)
+	return b
+}
+
+// ParseCoverOpen returns the target rate in kbps from a COVER_OPEN payload.
+func ParseCoverOpen(payload []byte) (uint16, error) {
+	if len(payload) != 3 || payload[0] != 1 {
+		return 0, errors.New("invalid COVER_OPEN")
+	}
+	return binary.BigEndian.Uint16(payload[1:]), nil
+}
 
 // UDPDatagramPayload encodes one complete UDP datagram. The address is a
 // destination in c2s frames and the observed source in s2c frames.

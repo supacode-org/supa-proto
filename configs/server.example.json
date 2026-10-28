@@ -12,6 +12,12 @@
     "provider": "none",
     "participation": 0
   },
+  "cover": {
+    "enabled": false,
+    "max_rate_kbps_per_user": 8000,
+    "max_sessions_per_user": 32,
+    "max_total_rate_mbps": 0
+  },
   "udp": {
     "enabled": true,
     "idle_timeout": "2m",

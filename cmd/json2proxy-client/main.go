@@ -41,9 +41,17 @@ func main() {
 	listener, err := net.Listen("tcp", cfg.SocksListen)
 	must(err)
 	defer listener.Close()
-	logger.Printf("client starting product=JSON2Proxy protocol=v%d socks_listen=%s server=%s log_size=%s performance=%s obfs=%s obfs_version=%s participation=%.3f obfs_hash=%s udp=%t udp_bind=%s",
+	logger.Printf("client starting product=JSON2Proxy protocol=v%d socks_listen=%s server=%s log_size=%s performance=%s obfs=%s obfs_version=%s participation=%.3f obfs_hash=%s udp=%t udp_bind=%s cover=%t cover_rate=%dkbps",
 		protocol.Version, cfg.SocksListen, cfg.Server, cfg.LogSize, cfg.Performance.Mode,
-		provider.ID(), provider.Descriptor.Version, provider.Participation, provider.Hash(), cfg.UDP.IsEnabled(), cfg.UDP.Bind)
+		provider.ID(), provider.Descriptor.Version, provider.Participation, provider.Hash(), cfg.UDP.IsEnabled(), cfg.UDP.Bind,
+		cfg.Cover.Enabled, cfg.Cover.RateKbps)
+	if cfg.Cover.Enabled {
+		cover := proxy.StartCover(context.Background(), client.CoverOptions{
+			RateKbps: cfg.Cover.RateKbps,
+			Log:      func(_ int, tag, message string) { logger.Printf("%s %s", tag, message) },
+		})
+		defer cover.Close()
+	}
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

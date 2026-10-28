@@ -37,6 +37,22 @@ type Descriptor struct {
 	Messages      map[string]MessageTemplate `json:"messages"`
 	NoiseFields   map[string]NoiseRule       `json:"noiseFields"`
 	Decoys        []DecoyRule                `json:"decoys"`
+	// Cover is optional. When present, the provider supports cross-connection
+	// cover traffic (see the cover-traffic spec): extra sessions that carry no
+	// real target and generate steady, video-like decoy data in Direction.
+	Cover *CoverProfile `json:"cover"`
+}
+
+// CoverProfile describes how a provider shapes cover traffic. Direction is the
+// side that generates data ("s2c" streams down like a camera feed, "c2s"
+// uploads like a bulk database load). The chunk and interval ranges bound the
+// per-frame payload size and spacing; the shaper samples within them.
+type CoverProfile struct {
+	Direction     string `json:"direction"`
+	ChunkBytesMin int    `json:"chunkBytesMin"`
+	ChunkBytesMax int    `json:"chunkBytesMax"`
+	IntervalMsMin int    `json:"intervalMsMin"`
+	IntervalMsMax int    `json:"intervalMsMax"`
 }
 
 type Discriminator struct {
@@ -315,9 +331,49 @@ func (p *Provider) validate() error {
 			}
 		}
 	}
+	if err := p.validateCover(); err != nil {
+		return err
+	}
 	p.applyLimitDefaults()
 	return nil
 }
+
+// coverChunkCeiling bounds a single cover payload so the encoded wire line
+// (AEAD tag, base64 and JSON field names) stays well under protocol.MaxLine.
+const coverChunkCeiling = 48 << 10
+
+func (p *Provider) validateCover() error {
+	c := p.Descriptor.Cover
+	if c == nil {
+		return nil
+	}
+	if c.Direction != "c2s" && c.Direction != "s2c" {
+		return errors.New("obfs cover direction must be c2s or s2c")
+	}
+	if c.ChunkBytesMin == 0 {
+		c.ChunkBytesMin = 4096
+	}
+	if c.ChunkBytesMax == 0 {
+		c.ChunkBytesMax = coverChunkCeiling
+	}
+	if c.IntervalMsMin == 0 {
+		c.IntervalMsMin = 40
+	}
+	if c.IntervalMsMax == 0 {
+		c.IntervalMsMax = 400
+	}
+	if c.ChunkBytesMin < 256 || c.ChunkBytesMax > coverChunkCeiling || c.ChunkBytesMin > c.ChunkBytesMax {
+		return errors.New("obfs cover chunk range must be within [256, 49152] with min <= max")
+	}
+	if c.IntervalMsMin < 1 || c.IntervalMsMax > 5000 || c.IntervalMsMin > c.IntervalMsMax {
+		return errors.New("obfs cover interval range must be within [1, 5000]ms with min <= max")
+	}
+	return nil
+}
+
+// Cover returns the provider's cover profile, or nil when it does not support
+// cover traffic.
+func (p *Provider) Cover() *CoverProfile { return p.Descriptor.Cover }
 
 func validateDirections(values []string) error {
 	if len(values) == 0 || len(values) > 2 {

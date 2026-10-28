@@ -30,6 +30,11 @@ type Collector struct {
 	tcp, udp atomic.Int64
 	up, down atomic.Int64
 
+	// Cover traffic is counted apart from real flows: cover is the active cover
+	// connection count, coverUp/coverDown its payload bytes per direction.
+	cover              atomic.Int64
+	coverUp, coverDown atomic.Int64
+
 	mu    sync.Mutex
 	hosts map[string]*host
 	dns   map[string]DNSRecord
@@ -200,6 +205,19 @@ func (c *countingConn) CloseWrite() error {
 	return c.Conn.Close()
 }
 
+// AddCoverConn adjusts the active cover-connection count by delta.
+func (c *Collector) AddCoverConn(delta int) { c.cover.Add(int64(delta)) }
+
+// AddCoverBytes counts cover payload bytes sent (up) and received (down).
+func (c *Collector) AddCoverBytes(up, down int) {
+	if up > 0 {
+		c.coverUp.Add(int64(up))
+	}
+	if down > 0 {
+		c.coverDown.Add(int64(down))
+	}
+}
+
 func (c *Collector) addFlow(r FlowRecord) {
 	if len(c.flows) == 0 {
 		return
@@ -240,14 +258,17 @@ func (c *Collector) RecordDNS(name string, addrs []netip.Addr, err error) {
 }
 
 type Snapshot struct {
-	Time  int64          `json:"time"`
-	TCP   int64          `json:"tcp"`
-	UDP   int64          `json:"udp"`
-	Up    int64          `json:"up"`
-	Down  int64          `json:"down"`
-	Hosts []HostSnapshot `json:"hosts,omitempty"`
-	DNS   []DNSRecord    `json:"dns,omitempty"`
-	Flows []FlowRecord   `json:"flows,omitempty"`
+	Time      int64          `json:"time"`
+	TCP       int64          `json:"tcp"`
+	UDP       int64          `json:"udp"`
+	Up        int64          `json:"up"`
+	Down      int64          `json:"down"`
+	Cover     int64          `json:"cover"`
+	CoverUp   int64          `json:"cover_up"`
+	CoverDown int64          `json:"cover_down"`
+	Hosts     []HostSnapshot `json:"hosts,omitempty"`
+	DNS       []DNSRecord    `json:"dns,omitempty"`
+	Flows     []FlowRecord   `json:"flows,omitempty"`
 }
 
 type HostSnapshot struct {
@@ -285,6 +306,7 @@ func (c *Collector) Snapshot(detail bool) Snapshot {
 		Time: c.now().UnixMilli(),
 		TCP:  c.tcp.Load(), UDP: c.udp.Load(),
 		Up: c.up.Load(), Down: c.down.Load(),
+		Cover: c.cover.Load(), CoverUp: c.coverUp.Load(), CoverDown: c.coverDown.Load(),
 	}
 	if !detail {
 		return s
