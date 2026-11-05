@@ -31,6 +31,8 @@ data class TrafficStats(
     /** Bytes of every engine run so far, kept by the engine across runs. */
     val cumulativeUpload: Long = 0,
     val cumulativeDownload: Long = 0,
+    /** Cover traffic, counted apart from the connections and bytes above. */
+    val cover: CoverStats = CoverStats.None,
     /** Memory of the process running the engine; only the iOS extension reports it. */
     val memory: MemoryUsage? = null,
     /** Empty unless the sample was taken with detail. */
@@ -38,6 +40,16 @@ data class TrafficStats(
     val dns: List<DnsRecord> = emptyList(),
     val flows: List<FlowRecord> = emptyList(),
 )
+
+/** Active cover connections and their payload speeds in bytes per second. */
+data class CoverStats(val connections: Int, val uploadSpeed: Long, val downloadSpeed: Long) {
+    /** Whether there is anything to show. */
+    val isActive: Boolean get() = connections > 0
+
+    companion object {
+        val None = CoverStats(0, 0, 0)
+    }
+}
 
 /**
  * Memory of the iOS packet tunnel extension, which the system stops once it
@@ -131,6 +143,9 @@ internal data class EngineSnapshot(
     val down: Long = 0,
     @SerialName("total_up") val totalUp: Long = 0,
     @SerialName("total_down") val totalDown: Long = 0,
+    val cover: Int = 0,
+    @SerialName("cover_up") val coverUp: Long = 0,
+    @SerialName("cover_down") val coverDown: Long = 0,
     val hosts: List<EngineHost> = emptyList(),
     val dns: List<DnsRecord> = emptyList(),
     val flows: List<FlowRecord> = emptyList(),
@@ -182,6 +197,11 @@ class TrafficSampler {
             downloadSpeed = speed(last?.down, current.down, elapsed),
             cumulativeUpload = current.totalUp,
             cumulativeDownload = current.totalDown,
+            cover = CoverStats(
+                connections = current.cover,
+                uploadSpeed = speed(last?.coverUp, current.coverUp, elapsed),
+                downloadSpeed = speed(last?.coverDown, current.coverDown, elapsed),
+            ),
             memory = current.memory?.let { MemoryUsage(it.used, it.available) },
             hosts = current.hosts.map { host ->
                 val before = previousHosts[host.host]
@@ -243,7 +263,7 @@ object TrafficFormat {
         return "${decimal(value)} ${units[index]}"
     }
 
-    private fun decimal(value: Double): String {
+    internal fun decimal(value: Double): String {
         val decimals = when {
             value < 9.995 -> 2
             value < 99.95 -> 1

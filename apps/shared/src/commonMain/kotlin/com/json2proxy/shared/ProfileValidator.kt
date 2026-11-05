@@ -12,6 +12,7 @@ enum class ProfileProblem {
     UnknownObfsProvider,
     InvalidParticipation,
     UnknownPerformanceMode,
+    InvalidCoverRate,
 }
 
 /** Mirrors the Go client's configuration checks so errors show up in the form. */
@@ -33,6 +34,11 @@ object ProfileValidator {
             problems += ProfileProblem.InvalidParticipation
         }
         if (profile.performanceMode !in PerformanceModes.all) problems += ProfileProblem.UnknownPerformanceMode
+        if (CoverTraffic.active(profile) &&
+            profile.coverRateKbps !in CoverTraffic.MIN_RATE_KBPS..CoverTraffic.MAX_RATE_KBPS
+        ) {
+            problems += ProfileProblem.InvalidCoverRate
+        }
         return problems
     }
 

@@ -63,6 +63,11 @@
     <string name="perf_interactive">Interactive</string>
     <string name="perf_throughput">Throughput</string>
     <string name="field_udp">UDP</string>
+    <string name="section_cover">Cover traffic</string>
+    <string name="field_cover">Send cover traffic</string>
+    <string name="field_cover_rate">Target rate (kbps)</string>
+    <string name="cover_estimate">About %1$s per month if connected all day; actual use depends on time connected.</string>
+    <string name="cover_needs_provider">Choose an obfuscation provider to use cover traffic.</string>
     <string name="problem_name_required">Name is required</string>
     <string name="problem_invalid_server">Server must be host:port</string>
     <string name="problem_client_id_required">Client ID is required</string>
@@ -71,6 +76,7 @@
     <string name="problem_unknown_obfs">Unknown obfuscation provider</string>
     <string name="problem_invalid_participation">Participation must be between 0 and 1</string>
     <string name="problem_unknown_performance">Unknown performance mode</string>
+    <string name="problem_invalid_cover_rate">Target rate must be between %1$d and %2$d kbps</string>
     <string name="secret_store_failed">Could not store the secret securely. The server was not saved.</string>
 
     <!-- Settings -->
@@ -136,6 +142,9 @@
     <string name="traffic_chart_description">Download %1$s, upload %2$s</string>
     <string name="traffic_total">Total</string>
     <string name="traffic_total_description">Total downloaded %1$s, uploaded %2$s</string>
+    <string name="traffic_cover">Cover</string>
+    <string name="traffic_cover_connections">%1$d conn</string>
+    <string name="traffic_cover_description">Cover traffic: %1$d connections, download %2$s, upload %3$s</string>
     <string name="home_session_description">%1$s, routing: %2$s</string>
     <string name="kill_switch_on">On</string>
     <string name="kill_switch_off">Off</string>

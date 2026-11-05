@@ -16,6 +16,8 @@ struct ServerEditorView: View {
     @State private var participation: String
     @State private var performanceMode: String
     @State private var udpEnabled: Bool
+    @State private var coverEnabled: Bool
+    @State private var coverRate: String
     @State private var problems: [ProfileProblem] = []
 
     /// Edits `profile`, or adds a server; `imported` pre-fills a new server from a scanned link.
@@ -31,11 +33,13 @@ struct ServerEditorView: View {
         _participation = State(initialValue: String(profile?.obfsParticipation ?? 0))
         _performanceMode = State(initialValue: profile?.performanceMode ?? PerformanceModes.shared.INTERACTIVE)
         _udpEnabled = State(initialValue: profile?.udpEnabled ?? true)
+        _coverEnabled = State(initialValue: profile?.coverEnabled ?? false)
+        _coverRate = State(initialValue: String(profile?.coverRateKbps ?? CoverTraffic.shared.DEFAULT_RATE_KBPS))
     }
 
     /// Parts of the form that a validation problem points at, in form order.
     private enum Field: Int, Comparable {
-        case name, server, clientId, secret, obfs, participation, transport
+        case name, server, clientId, secret, obfs, participation, cover, transport
 
         static func < (lhs: Field, rhs: Field) -> Bool { lhs.rawValue < rhs.rawValue }
     }
@@ -49,6 +53,7 @@ struct ServerEditorView: View {
         case .unknownObfsProvider: .obfs
         case .invalidParticipation: .participation
         case .unknownPerformanceMode: .transport
+        case .invalidCoverRate: .cover
         }
     }
 
@@ -102,6 +107,25 @@ struct ServerEditorView: View {
                 }
                 .id(Field.obfs)
 
+                TerminalSection(String(localized: "Cover traffic")) {
+                    let supported = ObfsProviders.shared.supportsCover(provider: obfsProvider)
+                    TerminalSwitchRow(
+                        String(localized: "Send cover traffic"),
+                        isOn: Binding(get: { coverEnabled && supported }, set: { coverEnabled = $0 })
+                    )
+                    .disabled(!supported)
+                    if !supported {
+                        TerminalNote(String(localized: "Choose an obfuscation provider to use cover traffic."))
+                    } else if coverEnabled {
+                        TerminalTextField(String(localized: "Target rate (kbps)"), text: $coverRate, error: error(.cover))
+                            .keyboardType(.numberPad)
+                        if let rate = validCoverRate {
+                            TerminalNote(String(localized: "About \(CoverTraffic.shared.monthlyEstimate(rateKbps: rate)) per month if connected all day; actual use depends on time connected."))
+                        }
+                    }
+                }
+                .id(Field.cover)
+
                 TerminalSection(String(localized: "Transport")) {
                     TerminalChoiceList(
                         selection: $performanceMode,
@@ -131,6 +155,13 @@ struct ServerEditorView: View {
         }
     }
 
+    /// The entered rate when it is within the bounds the core accepts.
+    private var validCoverRate: Int32? {
+        guard let rate = Int32(ModelsKt.normalizeAscii(input: coverRate)),
+              (CoverTraffic.shared.MIN_RATE_KBPS...CoverTraffic.shared.MAX_RATE_KBPS).contains(rate) else { return nil }
+        return rate
+    }
+
     private func save() {
         let profile = ServerProfile(
             id: existing?.id ?? model.newProfileId(),
@@ -140,7 +171,10 @@ struct ServerEditorView: View {
             obfsProvider: obfsProvider,
             obfsParticipation: Double(ModelsKt.normalizeAscii(input: participation)) ?? .nan,
             performanceMode: performanceMode,
-            udpEnabled: udpEnabled
+            udpEnabled: udpEnabled,
+            // A provider without a cover profile cannot carry cover traffic.
+            coverEnabled: coverEnabled && ObfsProviders.shared.supportsCover(provider: obfsProvider),
+            coverRateKbps: Int32(ModelsKt.normalizeAscii(input: coverRate)) ?? -1
         )
         // Editing with an empty field keeps the stored secret.
         let newSecret: String? = (existing != nil && secret.isEmpty) ? nil : ModelsKt.normalizeAscii(input: secret)

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import com.json2proxy.android.R
 import com.json2proxy.shared.AppGraph
+import com.json2proxy.shared.CoverTraffic
 import com.json2proxy.shared.ObfsProviders
 import com.json2proxy.shared.PerformanceModes
 import com.json2proxy.shared.ProfileProblem
@@ -34,6 +35,7 @@ import org.supacode.terminalui.TerminalButtonVariant
 import org.supacode.terminalui.TerminalChoiceList
 import org.supacode.terminalui.TerminalChoiceOption
 import org.supacode.terminalui.TerminalIcon
+import org.supacode.terminalui.TerminalNote
 import org.supacode.terminalui.TerminalPage
 import org.supacode.terminalui.TerminalPageHeader
 import org.supacode.terminalui.TerminalPathTitle
@@ -45,7 +47,7 @@ import org.supacode.terminalui.TerminalSwitchRow
 import org.supacode.terminalui.TerminalTextField
 
 /** Parts of the form that a validation problem points at. */
-private enum class Field { Name, Server, ClientId, Secret, Obfs, Participation, Transport }
+private enum class Field { Name, Server, ClientId, Secret, Obfs, Participation, Cover, Transport }
 
 private fun ProfileProblem.field(): Field = when (this) {
     ProfileProblem.NameRequired -> Field.Name
@@ -55,6 +57,7 @@ private fun ProfileProblem.field(): Field = when (this) {
     ProfileProblem.UnknownObfsProvider -> Field.Obfs
     ProfileProblem.InvalidParticipation -> Field.Participation
     ProfileProblem.UnknownPerformanceMode -> Field.Transport
+    ProfileProblem.InvalidCoverRate -> Field.Cover
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -72,6 +75,8 @@ internal fun ServerEditorScreen(graph: AppGraph, profileId: String?, imported: S
     var participation by remember { mutableStateOf((initial?.obfsParticipation ?: 0.0).toString()) }
     var performance by remember { mutableStateOf(initial?.performanceMode ?: PerformanceModes.INTERACTIVE) }
     var udp by remember { mutableStateOf(initial?.udpEnabled ?: true) }
+    var cover by remember { mutableStateOf(initial?.coverEnabled ?: false) }
+    var coverRate by remember { mutableStateOf((initial?.coverRateKbps ?: CoverTraffic.DEFAULT_RATE_KBPS).toString()) }
     var problems by remember { mutableStateOf(emptyList<ProfileProblem>()) }
 
     val scope = rememberCoroutineScope()
@@ -89,6 +94,9 @@ internal fun ServerEditorScreen(graph: AppGraph, profileId: String?, imported: S
             obfsParticipation = normalizeAscii(participation).toDoubleOrNull() ?: Double.NaN,
             performanceMode = performance,
             udpEnabled = udp,
+            // A provider without a cover profile cannot carry cover traffic.
+            coverEnabled = cover && ObfsProviders.supportsCover(obfs),
+            coverRateKbps = normalizeAscii(coverRate).toIntOrNull() ?: -1,
         )
         // Editing with an empty field keeps the stored secret.
         val newSecret = if (existing != null && secret.isEmpty()) null else normalizeAscii(secret)
@@ -174,6 +182,25 @@ internal fun ServerEditorScreen(graph: AppGraph, profileId: String?, imported: S
             }
         }
 
+        TerminalSection(stringResource(R.string.section_cover), Modifier.tracked(Field.Cover)) {
+            val supported = ObfsProviders.supportsCover(obfs)
+            TerminalSwitchRow(stringResource(R.string.field_cover), cover && supported, onCheckedChange = { cover = it }, enabled = supported)
+            if (!supported) {
+                TerminalNote(stringResource(R.string.cover_needs_provider))
+            } else if (cover) {
+                TerminalTextField(
+                    value = coverRate, onValueChange = { coverRate = it },
+                    label = stringResource(R.string.field_cover_rate),
+                    error = errorFor(Field.Cover),
+                    keyboardOptions = TechnicalKeyboard.copy(keyboardType = KeyboardType.Number),
+                )
+                val rate = normalizeAscii(coverRate).toIntOrNull()
+                if (rate != null && rate in CoverTraffic.MIN_RATE_KBPS..CoverTraffic.MAX_RATE_KBPS) {
+                    TerminalNote(stringResource(R.string.cover_estimate, CoverTraffic.monthlyEstimate(rate)))
+                }
+            }
+        }
+
         TerminalSection(stringResource(R.string.section_transport), Modifier.tracked(Field.Transport)) {
             TerminalChoiceList(
                 PerformanceModes.all.map { TerminalChoiceOption(it, performanceLabel(it), detail = it) },
@@ -206,15 +233,15 @@ private fun performanceLabel(mode: String): String = when (mode) {
 }
 
 @Composable
-private fun ProfileProblem.text(): String = stringResource(
-    when (this) {
-        ProfileProblem.NameRequired -> R.string.problem_name_required
-        ProfileProblem.InvalidServer -> R.string.problem_invalid_server
-        ProfileProblem.ClientIdRequired -> R.string.problem_client_id_required
-        ProfileProblem.SecretNotBase64Url -> R.string.problem_secret_not_base64url
-        ProfileProblem.SecretTooShort -> R.string.problem_secret_too_short
-        ProfileProblem.UnknownObfsProvider -> R.string.problem_unknown_obfs
-        ProfileProblem.InvalidParticipation -> R.string.problem_invalid_participation
-        ProfileProblem.UnknownPerformanceMode -> R.string.problem_unknown_performance
-    },
-)
+private fun ProfileProblem.text(): String = when (this) {
+    ProfileProblem.NameRequired -> stringResource(R.string.problem_name_required)
+    ProfileProblem.InvalidServer -> stringResource(R.string.problem_invalid_server)
+    ProfileProblem.ClientIdRequired -> stringResource(R.string.problem_client_id_required)
+    ProfileProblem.SecretNotBase64Url -> stringResource(R.string.problem_secret_not_base64url)
+    ProfileProblem.SecretTooShort -> stringResource(R.string.problem_secret_too_short)
+    ProfileProblem.UnknownObfsProvider -> stringResource(R.string.problem_unknown_obfs)
+    ProfileProblem.InvalidParticipation -> stringResource(R.string.problem_invalid_participation)
+    ProfileProblem.UnknownPerformanceMode -> stringResource(R.string.problem_unknown_performance)
+    ProfileProblem.InvalidCoverRate ->
+        stringResource(R.string.problem_invalid_cover_rate, CoverTraffic.MIN_RATE_KBPS, CoverTraffic.MAX_RATE_KBPS)
+}
