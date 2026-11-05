@@ -291,6 +291,8 @@ extension ProfileProblem {
         case .unknownObfsProvider: String(localized: "Unknown obfuscation provider")
         case .invalidParticipation: String(localized: "Participation must be between 0 and 1")
         case .unknownPerformanceMode: String(localized: "Unknown performance mode")
+        case .invalidCoverRate:
+            String(localized: "Target rate must be between \(Int(CoverTraffic.shared.MIN_RATE_KBPS)) and \(Int(CoverTraffic.shared.MAX_RATE_KBPS)) kbps")
         }
     }
 }

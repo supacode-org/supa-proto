@@ -15,6 +15,10 @@ data class ServerProfile(
     val obfsParticipation: Double = 0.0,
     val performanceMode: String = PerformanceModes.INTERACTIVE,
     val udpEnabled: Boolean = true,
+    /** Cover traffic; only takes effect with a provider in [ObfsProviders.withCover]. */
+    val coverEnabled: Boolean = false,
+    /** Target wire rate of all cover connections together. */
+    val coverRateKbps: Int = CoverTraffic.DEFAULT_RATE_KBPS,
 )
 
 object ObfsProviders {
@@ -23,6 +27,40 @@ object ObfsProviders {
 
     /** Participation the server and client use when a provider is enabled. */
     const val DEFAULT_PARTICIPATION = 0.65
+
+    /** Providers whose descriptor declares a cover profile. */
+    val withCover = setOf("iot-cam", "mysql")
+
+    fun supportsCover(provider: String): Boolean = provider in withCover
+}
+
+/**
+ * Cover traffic: extra sessions that exchange decoy data at a steady rate.
+ * The Go core decides how many connections to open; the app only sets the
+ * target rate. Never part of a server link.
+ */
+object CoverTraffic {
+    const val DEFAULT_RATE_KBPS = 1000
+    /** Bounds the Go client accepts for cover.rate_kbps. */
+    const val MIN_RATE_KBPS = 64
+    const val MAX_RATE_KBPS = 100_000
+
+    /** Whether [profile] would actually generate cover traffic. */
+    fun active(profile: ServerProfile): Boolean =
+        profile.coverEnabled && ObfsProviders.supportsCover(profile.obfsProvider)
+
+    /**
+     * Decimal gigabytes over 30 days online around the clock at [rateKbps]:
+     * kbps × 1000 / 8 × 2,592,000 s / 1e9.
+     */
+    fun monthlyGigabytes(rateKbps: Int): Double = rateKbps * 0.324
+
+    /** [monthlyGigabytes] as "324 GB", or in TB from 1000 GB. */
+    fun monthlyEstimate(rateKbps: Int): String {
+        val gigabytes = monthlyGigabytes(rateKbps)
+        return if (gigabytes < 999.5) "${TrafficFormat.decimal(gigabytes)} GB"
+        else "${TrafficFormat.decimal(gigabytes / 1000)} TB"
+    }
 }
 
 object PerformanceModes {

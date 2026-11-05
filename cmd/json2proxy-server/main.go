@@ -41,6 +41,9 @@ type app struct {
 	users            map[string]config.User
 	replay           map[string]time.Time
 	active           map[string]int
+	coverActive      map[string]int
+	coverRate        map[string]int
+	coverTotal       int
 	udpActive        map[string]int
 	udpRates         map[string]*udpRateState
 	udpDNS           map[string]udpDNSCacheEntry
@@ -114,8 +117,9 @@ func main() {
 
 	a := &app{
 		cfg: cfg, users: make(map[string]config.User), replay: make(map[string]time.Time),
-		active: make(map[string]int), udpActive: make(map[string]int),
-		udpRates: make(map[string]*udpRateState), udpDNS: make(map[string]udpDNSCacheEntry),
+		active: make(map[string]int), coverActive: make(map[string]int), coverRate: make(map[string]int),
+		udpActive: make(map[string]int),
+		udpRates:  make(map[string]*udpRateState), udpDNS: make(map[string]udpDNSCacheEntry),
 		log: logger, provider: provider,
 	}
 	a.handshakeTimeout, _ = config.Duration(cfg.HandshakeTimeout)
@@ -248,6 +252,10 @@ func (a *app) serve(tunnel net.Conn) {
 			return
 		}
 		a.serveUDP(tunnel, writer, session, user, source, started)
+		return
+	}
+	if frame.Type == protocol.FrameCoverOpen {
+		a.serveCover(tunnel, wire, writer, session, clientHello.ClientID, source, started, frame.Payload)
 		return
 	}
 	if frame.Type != protocol.FrameOpen {

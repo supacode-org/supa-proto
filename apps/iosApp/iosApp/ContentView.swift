@@ -193,12 +193,41 @@ private struct TrafficPanel: View {
                     StatCell(glyph: nil, label: Glyph.udp, value: String(traffic.udpConnections), color: TerminalColors.textPrimary)
                 }
             }
+            if traffic.cover.isActive {
+                CoverLine(cover: traffic.cover, unit: unit)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
             TotalLine(traffic: traffic, unit: unit)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(.horizontal, TerminalSpacing.space14)
         .padding(.top, TerminalSpacing.space12)
         .padding(.bottom, TerminalSpacing.space14)
+    }
+}
+
+/// Cover connections and speeds, kept apart from the real traffic above.
+private struct CoverLine: View {
+    let cover: CoverStats
+    let unit: TrafficUnit
+
+    var body: some View {
+        let download = TrafficFormat.shared.rate(bytesPerSecond: cover.downloadSpeed, unit: unit)
+        let upload = TrafficFormat.shared.rate(bytesPerSecond: cover.uploadSpeed, unit: unit)
+        let connections = Int(cover.connections)
+        (Text("Cover").foregroundColor(TerminalColors.textSecondary)
+            + Text(verbatim: " ")
+            + Text("\(connections) conn").foregroundColor(TerminalColors.textPrimary)
+            + Text(verbatim: Glyph.footerSeparator).foregroundColor(TerminalColors.textSecondary)
+            + Text(verbatim: "\(TerminalGlyph.download) ").foregroundColor(TerminalColors.syntaxKey)
+            + Text(verbatim: download).foregroundColor(TerminalColors.textPrimary)
+            + Text(verbatim: Glyph.footerSeparator).foregroundColor(TerminalColors.textSecondary)
+            + Text(verbatim: "\(TerminalGlyph.upload) ").foregroundColor(TerminalColors.syntaxNumber)
+            + Text(verbatim: upload).foregroundColor(TerminalColors.textPrimary))
+            .font(TerminalType.caption)
+            .lineLimit(1)
+            .accessibilityElement()
+            .accessibilityLabel(Text("Cover traffic: \(connections) connections, download \(download), upload \(upload)"))
     }
 }
 

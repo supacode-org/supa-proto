@@ -49,6 +49,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.json2proxy.android.R
 import com.json2proxy.shared.AppGraph
 import com.json2proxy.shared.ConnectionState
+import com.json2proxy.shared.CoverStats
 import com.json2proxy.shared.Latency
 import com.json2proxy.shared.RoutingMode
 import com.json2proxy.shared.TrafficFormat
@@ -309,8 +310,36 @@ private fun TrafficPanel(traffic: TrafficStats, history: List<TrafficPoint>, uni
             StatCell(null, stringResource(R.string.stat_tcp), traffic.tcpConnections.toString(), TerminalColors.textPrimary, Modifier.weight(1f))
             StatCell(null, stringResource(R.string.stat_udp), traffic.udpConnections.toString(), TerminalColors.textPrimary, Modifier.weight(1f))
         }
+        if (traffic.cover.isActive) CoverLine(traffic.cover, unit, Modifier.align(Alignment.End))
         TotalLine(traffic, unit, Modifier.align(Alignment.End))
     }
+}
+
+/** Cover connections and speeds, kept apart from the real traffic above. */
+@Composable
+private fun CoverLine(cover: CoverStats, unit: TrafficUnit, modifier: Modifier) {
+    val download = TrafficFormat.rate(cover.downloadSpeed, unit)
+    val upload = TrafficFormat.rate(cover.uploadSpeed, unit)
+    val description = stringResource(R.string.traffic_cover_description, cover.connections, download, upload)
+    val label = stringResource(R.string.traffic_cover)
+    val connections = stringResource(R.string.traffic_cover_connections, cover.connections)
+    val secondary = TerminalColors.textSecondary
+    val primary = TerminalColors.textPrimary
+    Text(
+        buildAnnotatedString {
+            appendColored("$label ", secondary)
+            appendColored(connections, primary)
+            appendColored(" ${TerminalGlyph.DOT} ", secondary)
+            appendColored("${TerminalGlyph.DOWNLOAD} ", TerminalColors.syntaxKey)
+            appendColored(download, primary)
+            appendColored(" ${TerminalGlyph.DOT} ", secondary)
+            appendColored("${TerminalGlyph.UPLOAD} ", TerminalColors.syntaxNumber)
+            appendColored(upload, primary)
+        },
+        style = TerminalType.caption,
+        maxLines = 1,
+        modifier = modifier.clearAndSetSemantics { contentDescription = description },
+    )
 }
 
 /** Upload and download of every connection so far, at the panel's bottom right. */

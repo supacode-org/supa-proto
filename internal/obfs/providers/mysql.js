@@ -1,8 +1,15 @@
 defineObfsProvider({
   apiVersion: 1,
   id: "mysql",
-  version: "1.0.0",
+  version: "1.1.0",
   description: "JSON MySQL gateway and connection telemetry profile",
+  cover: {
+    direction: "c2s",
+    chunkBytesMin: 2048,
+    chunkBytesMax: 32768,
+    intervalMsMin: 80,
+    intervalMsMax: 4000
+  },
   limits: {
     maxExtraFieldsPerMessage: 8,
     maxExtraBytesPerMessage: 1024,

@@ -33,9 +33,27 @@ type Server struct {
 	LogFile          string      `json:"log_file"`
 	Performance      Performance `json:"performance"`
 	Obfs             obfs.Config `json:"obfs"`
+	Cover            CoverServer `json:"cover"`
 	UDP              ServerUDP   `json:"udp"`
 	Outbound         Outbound    `json:"outbound,omitempty"`
 	Users            []User      `json:"users"`
+}
+
+// CoverServer configures whether the server answers cover-traffic sessions and
+// the per-user and global limits that protect its bandwidth. Disabled by
+// default; see the cover-traffic spec.
+type CoverServer struct {
+	Enabled            bool `json:"enabled"`
+	MaxRateKbpsPerUser int  `json:"max_rate_kbps_per_user"`
+	MaxSessionsPerUser int  `json:"max_sessions_per_user"`
+	MaxTotalRateMbps   int  `json:"max_total_rate_mbps"`
+}
+
+// CoverClient configures whether the client generates cover traffic and the
+// target aggregate wire throughput in kbps. Disabled by default.
+type CoverClient struct {
+	Enabled  bool `json:"enabled"`
+	RateKbps int  `json:"rate_kbps"`
 }
 
 type ServerUDP struct {
@@ -86,6 +104,7 @@ type Client struct {
 	LogFile          string      `json:"log_file"`
 	Performance      Performance `json:"performance"`
 	Obfs             obfs.Config `json:"obfs"`
+	Cover            CoverClient `json:"cover"`
 	UDP              ClientUDP   `json:"udp"`
 }
 
@@ -141,6 +160,14 @@ func (s *Server) Defaults() {
 	s.Performance.Defaults()
 	if s.Obfs.Provider == "" {
 		s.Obfs.Provider = "none"
+	}
+	if s.Cover.Enabled {
+		if s.Cover.MaxRateKbpsPerUser == 0 {
+			s.Cover.MaxRateKbpsPerUser = 8000
+		}
+		if s.Cover.MaxSessionsPerUser == 0 {
+			s.Cover.MaxSessionsPerUser = coverMaxSessions
+		}
 	}
 	if s.UDP.Enabled == nil {
 		s.UDP.Enabled = boolValue(true)
@@ -205,6 +232,9 @@ func (c *Client) Defaults() {
 	if c.Obfs.Provider == "" {
 		c.Obfs.Provider = "none"
 	}
+	if c.Cover.Enabled && c.Cover.RateKbps == 0 {
+		c.Cover.RateKbps = 1000
+	}
 	if c.UDP.Enabled == nil {
 		c.UDP.Enabled = boolValue(true)
 	}
@@ -241,6 +271,9 @@ func (s Server) Validate() error {
 		return fmt.Errorf("idle_timeout: %w", err)
 	}
 	if err := validateObfs(s.Obfs); err != nil {
+		return err
+	}
+	if err := validateCoverServer(s.Cover); err != nil {
 		return err
 	}
 	if err := s.Performance.Validate(); err != nil {
@@ -309,6 +342,9 @@ func (c Client) Validate() error {
 		return err
 	}
 	if err := validateObfs(c.Obfs); err != nil {
+		return err
+	}
+	if err := validateCoverClient(c.Cover); err != nil {
 		return err
 	}
 	if err := c.Performance.Validate(); err != nil {
@@ -384,6 +420,40 @@ func validateServerUDP(value ServerUDP) error {
 	}
 	if _, err := Duration(value.DNSNegativeTTL); err != nil {
 		return fmt.Errorf("udp.dns_negative_ttl: %w", err)
+	}
+	return nil
+}
+
+// Cover-traffic bounds shared by client and server validation. coverMaxSessions
+// matches the hard cap the client enforces on mock connections.
+const (
+	coverMinRateKbps = 64
+	coverMaxRateKbps = 100000
+	coverMaxSessions = 32
+)
+
+func validateCoverClient(value CoverClient) error {
+	if !value.Enabled {
+		return nil
+	}
+	if value.RateKbps < coverMinRateKbps || value.RateKbps > coverMaxRateKbps {
+		return fmt.Errorf("cover.rate_kbps must be between %d and %d", coverMinRateKbps, coverMaxRateKbps)
+	}
+	return nil
+}
+
+func validateCoverServer(value CoverServer) error {
+	if !value.Enabled {
+		return nil
+	}
+	if value.MaxRateKbpsPerUser < coverMinRateKbps || value.MaxRateKbpsPerUser > coverMaxRateKbps {
+		return fmt.Errorf("cover.max_rate_kbps_per_user must be between %d and %d", coverMinRateKbps, coverMaxRateKbps)
+	}
+	if value.MaxSessionsPerUser < 1 || value.MaxSessionsPerUser > coverMaxSessions {
+		return fmt.Errorf("cover.max_sessions_per_user must be between 1 and %d", coverMaxSessions)
+	}
+	if value.MaxTotalRateMbps < 0 {
+		return errors.New("cover.max_total_rate_mbps must not be negative")
 	}
 	return nil
 }

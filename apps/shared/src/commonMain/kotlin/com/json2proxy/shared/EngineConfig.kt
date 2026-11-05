@@ -31,6 +31,13 @@ object EngineConfig {
                 }
                 putJsonObject("performance") { put("mode", profile.performanceMode) }
                 putJsonObject("udp") { put("enabled", profile.udpEnabled) }
+                // Left out when off, so the configuration stays as it was before cover existed.
+                if (CoverTraffic.active(profile)) {
+                    putJsonObject("cover") {
+                        put("enabled", true)
+                        put("rate_kbps", profile.coverRateKbps)
+                    }
+                }
             }
             put("mode", settings.routingMode.wire)
             if (settings.routingMode == RoutingMode.Custom) put("rules", settings.customRules)

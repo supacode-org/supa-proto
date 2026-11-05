@@ -65,6 +65,7 @@ Every descriptor has these top-level fields:
 | `messages` | Templates for the four required logical message types. |
 | `noiseFields` | Optional metadata rules, or `{}`. |
 | `decoys` | Optional maintenance-message rules, or `[]`. |
+| `cover` | Optional cover-traffic profile; omit to disable cover for the provider. |
 
 The required message types and logical fields are fixed:
 
@@ -220,6 +221,25 @@ optional and should be used sparingly. A rule contains an ID, a distinct wire
 event, allowed direction and session phases, a bounded trigger, and fixed or
 generated fields. The runtime enforces the limits for message size, rate,
 consecutive-message count, pre-handshake count, and overhead ratio.
+
+## Cover traffic
+
+`cover` is an optional profile that lets the provider carry cross-connection
+cover traffic: extra sessions that open with `COVER_OPEN` instead of `OPEN`,
+carry no real target, and generate (or discard) steady, video-like decoy data.
+It is off unless both endpoints enable cover in their configuration; a provider
+without a `cover` block does not support cover at all. The profile only sets the
+direction and shaping band; the connection count, per-connection rate, lifetime
+and rotation are fixed in the client and are not configurable.
+
+| Field | Purpose |
+| --- | --- |
+| `direction` | `s2c` (the server streams down, like a camera feed) or `c2s` (the client uploads, like a bulk load). Required. |
+| `chunkBytesMin` / `chunkBytesMax` | Per-frame payload size range, within `[256, 49152]`. Defaults 4096 / 49152. |
+| `intervalMsMin` / `intervalMsMax` | Cadence band in milliseconds, within `[1, 5000]`. Defaults 40 / 400. Keep it wide; the shaper derives the delay from the target rate and only clamps it into this band. |
+
+Adding or changing `cover` changes the descriptor hash, so bump `version` and
+deploy the same file to both endpoints, as for any other change.
 
 ## Validation checklist
 

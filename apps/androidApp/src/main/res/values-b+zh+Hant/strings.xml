@@ -61,6 +61,11 @@
     <string name="perf_interactive">互動優先</string>
     <string name="perf_throughput">吞吐量優先</string>
     <string name="field_udp">UDP</string>
+    <string name="section_cover">掩護流量</string>
+    <string name="field_cover">傳送掩護流量</string>
+    <string name="field_cover_rate">目標速率（kbps）</string>
+    <string name="cover_estimate">以全天連線估算約每月 %1$s，實際用量依連線時間而定。</string>
+    <string name="cover_needs_provider">選擇混淆方式後才能使用掩護流量。</string>
     <string name="problem_name_required">請輸入名稱</string>
     <string name="problem_invalid_server">伺服器格式須為 host:port</string>
     <string name="problem_client_id_required">請輸入用戶端 ID</string>
@@ -69,6 +74,7 @@
     <string name="problem_unknown_obfs">不支援的混淆方式</string>
     <string name="problem_invalid_participation">參與比例須介於 0 與 1 之間</string>
     <string name="problem_unknown_performance">不支援的效能模式</string>
+    <string name="problem_invalid_cover_rate">目標速率須介於 %1$d 與 %2$d kbps 之間</string>
     <string name="secret_store_failed">無法安全地儲存密鑰，伺服器未儲存。</string>
 
     <!-- 設定 -->
@@ -134,6 +140,9 @@
     <string name="traffic_chart_description">下載 %1$s，上傳 %2$s</string>
     <string name="traffic_total">累計</string>
     <string name="traffic_total_description">累計下載 %1$s，上傳 %2$s</string>
+    <string name="traffic_cover">掩護</string>
+    <string name="traffic_cover_connections">%1$d 條連線</string>
+    <string name="traffic_cover_description">掩護流量：%1$d 條連線，下載 %2$s，上傳 %3$s</string>
     <string name="home_session_description">%1$s，分流：%2$s</string>
     <string name="kill_switch_on">開啟</string>
     <string name="kill_switch_off">關閉</string>

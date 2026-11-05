@@ -1,8 +1,15 @@
 defineObfsProvider({
   apiVersion: 1,
   id: "iot-cam",
-  version: "1.0.0",
+  version: "1.1.0",
   description: "JSON camera registration, media and telemetry profile",
+  cover: {
+    direction: "s2c",
+    chunkBytesMin: 8192,
+    chunkBytesMax: 49152,
+    intervalMsMin: 300,
+    intervalMsMax: 5000
+  },
   limits: {
     maxExtraFieldsPerMessage: 8,
     maxExtraBytesPerMessage: 1024,

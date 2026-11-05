@@ -15,6 +15,10 @@
     "provider": "none",
     "participation": 0
   },
+  "cover": {
+    "enabled": false,
+    "rate_kbps": 1000
+  },
   "udp": {
     "enabled": true,
     "bind": "127.0.0.1:0",

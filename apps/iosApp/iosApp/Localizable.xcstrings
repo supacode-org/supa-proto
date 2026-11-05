@@ -11,6 +11,16 @@
         }
       }
     },
+    "%lld conn" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 條連線"
+          }
+        }
+      }
+    },
     "%lld ms" : {
       "localizations" : {
         "zh-Hant" : {
@@ -27,6 +37,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不到 1 毫秒"
+          }
+        }
+      }
+    },
+    "About %@ per month if connected all day; actual use depends on time connected." : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以全天連線估算約每月 %@，實際用量依連線時間而定。"
           }
         }
       }
@@ -181,6 +201,16 @@
         }
       }
     },
+    "Choose an obfuscation provider to use cover traffic." : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇混淆方式後才能使用掩護流量。"
+          }
+        }
+      }
+    },
     "Client ID" : {
       "localizations" : {
         "zh-Hant" : {
@@ -277,6 +307,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無法安全地儲存密鑰，伺服器未儲存。"
+          }
+        }
+      }
+    },
+    "Cover" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掩護"
+          }
+        }
+      }
+    },
+    "Cover traffic" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掩護流量"
+          }
+        }
+      }
+    },
+    "Cover traffic: %lld connections, download %@, upload %@" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "掩護流量：%1$lld 條連線，下載 %2$@，上傳 %3$@"
           }
         }
       }
@@ -1022,6 +1082,16 @@
         }
       }
     },
+    "Send cover traffic" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳送掩護流量"
+          }
+        }
+      }
+    },
     "Server" : {
       "localizations" : {
         "zh-Hant" : {
@@ -1128,6 +1198,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "嚴格 Kill Switch"
+          }
+        }
+      }
+    },
+    "Target rate (kbps)" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目標速率（kbps）"
+          }
+        }
+      }
+    },
+    "Target rate must be between %lld and %lld kbps" : {
+      "localizations" : {
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目標速率須介於 %1$lld 與 %2$lld kbps 之間"
           }
         }
       }
