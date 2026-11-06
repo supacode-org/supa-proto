@@ -11,8 +11,8 @@ logs/
 *.pcapng
 
 # Build output
-/json2proxy-client
-/json2proxy-server
+/supaproto-client
+/supaproto-server
 bin/
 build/
 dist/

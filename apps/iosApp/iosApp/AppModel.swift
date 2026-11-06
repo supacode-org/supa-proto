@@ -111,7 +111,7 @@ final class AppModel: ObservableObject {
 
     /// Latency tests need the VPN configuration; create it first (iOS asks the
     /// user once) and explain a refusal instead of failing silently.
-    private static let logger = Logger(subsystem: "com.json2proxy.app", category: "vpn")
+    private static let logger = Logger(subsystem: "org.supacode.protomobile.app", category: "vpn")
 
     private func prepareVPN() async -> Bool {
         #if targetEnvironment(simulator)
@@ -151,7 +151,7 @@ final class AppModel: ObservableObject {
 
     // MARK: Server links
 
-    /// Handles a json2proxy:// link opened from another app or the system camera.
+    /// Handles a supaproto:// link opened from another app or the system camera.
     func open(_ url: URL) {
         switch onEnum(of: ServerLinks.shared.parse(text: url.absoluteString)) {
         case .success(let result): pendingImport = ImportedServer(link: result.link)
@@ -162,7 +162,7 @@ final class AppModel: ObservableObject {
     func presentScanner() {
         guard let host = UIApplication.shared.topViewController else { return }
         let scanner = QRCodeScannerViewController(
-            hint: String(localized: "Point the camera at a JSON2Proxy QR code"),
+            hint: String(localized: "Point the camera at a Supa Proto QR code"),
             validator: { raw -> ScanDecision<ServerLink> in
                 switch onEnum(of: ServerLinks.shared.parse(text: raw)) {
                 case .success(let result): .accept(result.link)
@@ -259,7 +259,7 @@ struct ImportedServer: Identifiable {
 extension LinkProblem {
     var localizedText: String {
         switch self {
-        case .notServerLink: String(localized: "Not a JSON2Proxy QR code or link")
+        case .notServerLink: String(localized: "Not a Supa Proto QR code or link")
         case .unsupportedVersion: String(localized: "This link needs a newer version of the app")
         case .missingCredentials: String(localized: "The link is missing the client ID or secret")
         case .invalidServer: String(localized: "The link has an invalid server address")

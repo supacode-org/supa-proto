@@ -15,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"json2proxy/internal/socks5"
+	"supaproto/internal/socks5"
 )
 
 func TestUDPOverTCPEndToEnd(t *testing.T) {
@@ -25,10 +25,10 @@ func TestUDPOverTCPEndToEnd(t *testing.T) {
 	_, file, _, _ := runtime.Caller(0)
 	root := filepath.Dir(filepath.Dir(file))
 	temp := t.TempDir()
-	serverBinary := filepath.Join(temp, "json2proxy-server")
-	clientBinary := filepath.Join(temp, "json2proxy-client")
-	build(t, root, serverBinary, "./cmd/json2proxy-server")
-	build(t, root, clientBinary, "./cmd/json2proxy-client")
+	serverBinary := filepath.Join(temp, "supaproto-server")
+	clientBinary := filepath.Join(temp, "supaproto-client")
+	build(t, root, serverBinary, "./cmd/supaproto-server")
+	build(t, root, clientBinary, "./cmd/supaproto-client")
 
 	echo, err := net.ListenUDP("udp4", &net.UDPAddr{IP: net.IPv4(127, 0, 0, 1)})
 	if err != nil {
@@ -48,7 +48,7 @@ func TestUDPOverTCPEndToEnd(t *testing.T) {
 
 	serverAddress := reserveTCPAddress(t)
 	clientAddress := reserveTCPAddress(t)
-	provider := os.Getenv("JSON2PROXY_TEST_OBFS")
+	provider := os.Getenv("SUPAPROTO_TEST_OBFS")
 	participation := 0.0
 	if provider == "" {
 		provider = "none"
@@ -151,8 +151,8 @@ func TestClientUDPDisabledRejectsWithoutServerConnection(t *testing.T) {
 	_, file, _, _ := runtime.Caller(0)
 	root := filepath.Dir(filepath.Dir(file))
 	temp := t.TempDir()
-	clientBinary := filepath.Join(temp, "json2proxy-client")
-	build(t, root, clientBinary, "./cmd/json2proxy-client")
+	clientBinary := filepath.Join(temp, "supaproto-client")
+	build(t, root, clientBinary, "./cmd/supaproto-client")
 	clientAddress := reserveTCPAddress(t)
 	disabled := false
 	secret := base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{0x43}, 32))

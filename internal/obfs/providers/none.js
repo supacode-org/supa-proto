@@ -2,7 +2,7 @@ defineObfsProvider({
   apiVersion: 1,
   id: "none",
   version: "1.0.0",
-  description: "Identity JSON2Proxy wire format",
+  description: "Identity Supa Proto wire format",
   limits: {
     maxExtraFieldsPerMessage: 1,
     maxExtraBytesPerMessage: 1,

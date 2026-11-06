@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"testing"
 
-	"json2proxy/internal/config"
+	"supaproto/internal/config"
 )
 
 const testClientID = "integration-user"
@@ -28,19 +28,19 @@ func repoRoot() string {
 }
 
 func testProvider() (string, float64) {
-	if provider := os.Getenv("JSON2PROXY_TEST_OBFS"); provider != "" && provider != "none" {
+	if provider := os.Getenv("SUPAPROTO_TEST_OBFS"); provider != "" && provider != "none" {
 		return provider, 0.65
 	}
 	return "none", 0
 }
 
-// startServer builds and runs json2proxy-server with one user that may reach
+// startServer builds and runs supaproto-server with one user that may reach
 // private addresses, so tests can target local listeners.
 func startServer(t *testing.T) testServer {
 	t.Helper()
 	temp := t.TempDir()
-	binary := filepath.Join(temp, "json2proxy-server")
-	build(t, repoRoot(), binary, "./cmd/json2proxy-server")
+	binary := filepath.Join(temp, "supaproto-server")
+	build(t, repoRoot(), binary, "./cmd/supaproto-server")
 	provider, participation := testProvider()
 	srv := testServer{
 		address: reserveTCPAddress(t),

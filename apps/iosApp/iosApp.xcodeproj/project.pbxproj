@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000000000000000000014 /* Json2ProxyCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* Json2ProxyCore.xcframework */; };
-		A10000000000000000000015 /* Json2ProxyCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* Json2ProxyCore.xcframework */; };
+		A10000000000000000000014 /* SupaProtoCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* SupaProtoCore.xcframework */; };
+		A10000000000000000000015 /* SupaProtoCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* SupaProtoCore.xcframework */; };
 		A10000000000000000000016 /* PacketTunnel.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* PacketTunnel.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A10000000000000000000070 /* TerminalUI in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000072 /* TerminalUI */; };
 /* End PBXBuildFile section */
@@ -38,9 +38,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A10000000000000000000001 /* JSON2Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSON2Proxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000001 /* SupaProto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SupaProto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000003 /* PacketTunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PacketTunnel.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		A10000000000000000000006 /* Json2ProxyCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Json2ProxyCore.xcframework; path = ../build/Json2ProxyCore.xcframework; sourceTree = SOURCE_ROOT; };
+		A10000000000000000000006 /* SupaProtoCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SupaProtoCore.xcframework; path = ../build/SupaProtoCore.xcframework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -66,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000014 /* Json2ProxyCore.xcframework in Frameworks */,
+				A10000000000000000000014 /* SupaProtoCore.xcframework in Frameworks */,
 				A10000000000000000000070 /* TerminalUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A10000000000000000000015 /* Json2ProxyCore.xcframework in Frameworks */,
+				A10000000000000000000015 /* SupaProtoCore.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +85,7 @@
 		A10000000000000000000007 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000006 /* Json2ProxyCore.xcframework */,
+				A10000000000000000000006 /* SupaProtoCore.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,7 +104,7 @@
 		A10000000000000000000021 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000001 /* JSON2Proxy.app */,
+				A10000000000000000000001 /* SupaProto.app */,
 				A10000000000000000000003 /* PacketTunnel.appex */,
 			);
 			name = Products;
@@ -137,7 +137,7 @@
 				A10000000000000000000072 /* TerminalUI */,
 			);
 			productName = iosApp;
-			productReference = A10000000000000000000001 /* JSON2Proxy.app */;
+			productReference = A10000000000000000000001 /* SupaProto.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A10000000000000000000031 /* PacketTunnel */ = {
@@ -335,7 +335,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/iosApp-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = JSON2Proxy;
+				INFOPLIST_KEY_CFBundleDisplayName = "Supa Proto";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The camera is used to scan QR codes that add servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -353,8 +353,8 @@
 					Shared,
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.json2proxy.app;
-				PRODUCT_NAME = JSON2Proxy;
+				PRODUCT_BUNDLE_IDENTIFIER = org.supacode.protomobile.app;
+				PRODUCT_NAME = SupaProto;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -377,7 +377,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/iosApp-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = JSON2Proxy;
+				INFOPLIST_KEY_CFBundleDisplayName = "Supa Proto";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The camera is used to scan QR codes that add servers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -395,8 +395,8 @@
 					Shared,
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.json2proxy.app;
-				PRODUCT_NAME = JSON2Proxy;
+				PRODUCT_BUNDLE_IDENTIFIER = org.supacode.protomobile.app;
+				PRODUCT_NAME = SupaProto;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -424,7 +424,7 @@
 					"$(inherited)",
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.json2proxy.app.PacketTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = org.supacode.protomobile.app.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -454,7 +454,7 @@
 					"$(inherited)",
 					"-lresolv",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.json2proxy.app.PacketTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = org.supacode.protomobile.app.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -20,8 +20,8 @@ func TestTCPOverSOCKSEndToEnd(t *testing.T) {
 	echo := startTCPEcho(t)
 
 	temp := t.TempDir()
-	clientBinary := filepath.Join(temp, "json2proxy-client")
-	build(t, repoRoot(), clientBinary, "./cmd/json2proxy-client")
+	clientBinary := filepath.Join(temp, "supaproto-client")
+	build(t, repoRoot(), clientBinary, "./cmd/supaproto-client")
 	cfg := srv.clientConfig()
 	socksAddress := reserveTCPAddress(t)
 	path := writeJSON(t, temp, "client.json", map[string]any{

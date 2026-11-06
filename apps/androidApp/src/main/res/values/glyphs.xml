@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- App-only technical notation, the same in every language and never translated; generic notation is TerminalGlyph. -->
 <resources>
-    <string name="glyph_command" translatable="false">json2proxy</string>
+    <string name="glyph_command" translatable="false">supaproto</string>
     <string name="session_file" translatable="false">session.json</string>
     <string name="qr_file" translatable="false">server.qr</string>
-    <string name="link_scheme" translatable="false">json2proxy://</string>
+    <string name="link_scheme" translatable="false">supaproto://</string>
     <string name="session_live" translatable="false">live</string>
     <string name="session_idle" translatable="false">idle</string>
     <string name="json_key_state" translatable="false">state</string>

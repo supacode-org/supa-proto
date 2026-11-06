@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.json2proxy.shared"
+        namespace = "org.supacode.protomobile.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
         // Host tests run against android.jar stubs; let calls such as Log return defaults.
@@ -18,7 +18,7 @@ kotlin {
         target.binaries.framework {
             baseName = "Shared"
             isStatic = true
-            binaryOption("bundleId", "com.json2proxy.shared")
+            binaryOption("bundleId", "org.supacode.protomobile.shared")
         }
     }
 

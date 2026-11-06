@@ -87,7 +87,7 @@ private struct NetworkAccessAlert: ViewModifier {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("JSON2Proxy cannot reach the network. In Settings, allow it to use WLAN and cellular data.")
+            Text("Supa Proto cannot reach the network. In Settings, allow it to use WLAN and cellular data.")
         }
     }
 }

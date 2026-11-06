@@ -41,7 +41,7 @@ final class QRCodeScannerViewController: UIViewController, @preconcurrency AVCap
     private let resolve: (String) -> ScanDecision<() -> Void>
 
     private let session = AVCaptureSession()
-    private let sessionQueue = DispatchQueue(label: "com.json2proxy.qrscanner")
+    private let sessionQueue = DispatchQueue(label: "org.supacode.protomobile.qrscanner")
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var isHandled = false
     private var hasRequestedCamera = false

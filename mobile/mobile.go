@@ -10,7 +10,7 @@ import (
 	"sync"
 	"syscall"
 
-	"json2proxy/internal/router"
+	"supaproto/internal/router"
 )
 
 // Log levels passed to Platform.Log.

@@ -8,11 +8,11 @@ import (
 	"runtime/debug"
 	"sync"
 
-	"json2proxy/internal/config"
-	"json2proxy/internal/engine"
-	"json2proxy/internal/router"
-	"json2proxy/internal/stats"
-	"json2proxy/internal/tun"
+	"supaproto/internal/config"
+	"supaproto/internal/engine"
+	"supaproto/internal/router"
+	"supaproto/internal/stats"
+	"supaproto/internal/tun"
 )
 
 // Notice kinds sent by the running engine, in addition to the ones above.

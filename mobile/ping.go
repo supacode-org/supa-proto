@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"json2proxy/internal/dns"
+	"supaproto/internal/dns"
 )
 
 const (

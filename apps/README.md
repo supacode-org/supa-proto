@@ -1,6 +1,6 @@
 # Native apps
 
-This directory holds the JSON2Proxy client apps built with Kotlin
+This directory holds the Supa Proto client apps built with Kotlin
 Multiplatform. The Go module at the repository root remains the protocol core;
 the apps reuse it through gomobile (`mobile/`) instead of reimplementing the
 protocol in Kotlin. Android runs the Go engine in a `VpnService`; iOS runs it in
@@ -26,7 +26,7 @@ SKIE supports specific Kotlin releases, so upgrade them as a pair.
 ## Build
 
 From the repository root, build the Go core first; the apps link
-`apps/build/json2proxy-core.aar` and `apps/build/Json2ProxyCore.xcframework`:
+`apps/build/supaproto-core.aar` and `apps/build/SupaProtoCore.xcframework`:
 
 ```bash
 scripts/build-mobile-core.sh all   # or: ios, android

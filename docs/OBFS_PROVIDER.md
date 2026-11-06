@@ -1,6 +1,6 @@
 # Obfs Provider Guide
 
-An Obfs Provider defines JSON2Proxy's JSON presentation layer. It maps the
+An Obfs Provider defines Supa Proto's JSON presentation layer. It maps the
 protocol's fixed logical fields to wire-field names and order, and can
 optionally add bounded metadata fields or maintenance messages. It does not
 change TCP framing, authentication, encryption, routing, or SOCKS5 behavior.
@@ -17,7 +17,7 @@ participation value:
 ```json
 {
   "obfs": {
-    "provider": "file:/etc/json2proxy/obfs/example.js",
+    "provider": "file:/etc/supaproto/obfs/example.js",
     "participation": 0.25
   }
 }
@@ -35,7 +35,7 @@ there is no automatic fallback or per-connection negotiation.
 ## Provider files are static
 
 Provider files use a `.js` extension solely as a descriptor container. They are
-not executable JavaScript. JSON2Proxy does not embed a JavaScript runtime and
+not executable JavaScript. Supa Proto does not embed a JavaScript runtime and
 does not call `eval`, `Function`, `require`, imports, or code from the file.
 
 The only accepted top-level form is a single static object literal:
@@ -254,5 +254,5 @@ Before deploying a custom Provider:
 7. Measure throughput and latency with the intended workload before production
    use.
 
-If parsing or validation fails, JSON2Proxy refuses to start with that Provider;
+If parsing or validation fails, Supa Proto refuses to start with that Provider;
 it does not silently fall back to the `none` layout.

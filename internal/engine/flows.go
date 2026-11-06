@@ -9,11 +9,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"json2proxy/internal/client"
-	"json2proxy/internal/protocol"
-	"json2proxy/internal/router"
-	"json2proxy/internal/stats"
-	"json2proxy/internal/tun"
+	"supaproto/internal/client"
+	"supaproto/internal/protocol"
+	"supaproto/internal/router"
+	"supaproto/internal/stats"
+	"supaproto/internal/tun"
 )
 
 const (

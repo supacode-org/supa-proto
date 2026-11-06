@@ -1,6 +1,6 @@
-# JSON2Proxy
+# Supa Proto
 
-JSON2Proxy is a proxy protocol implementation built on TCP and JSON messages.
+Supa Proto is a proxy protocol implementation built on TCP and JSON messages.
 The client exposes a local SOCKS5 endpoint, the server connects to destination
 addresses, and the two peers exchange handshake, control, and data frames over
 a persistent newline-delimited JSON session.
@@ -9,7 +9,7 @@ The protocol uses readable JSON as its outer message format. Its connection
 behavior is intentionally close to that of a conventional long-lived
 application service: a session is established, state is exchanged, data flows
 continuously, and the connection closes normally. Application data and session
-authentication remain protected by the protocol layer; JSON2Proxy does not
+authentication remain protected by the protocol layer; Supa Proto does not
 depend on HTTP, TLS, or a CDN.
 
 ## Features
@@ -25,14 +25,14 @@ depend on HTTP, TLS, or a CDN.
 
 When server-side SOCKS5 egress is configured, `outbound.dns` may be `"local"`
 (the default) or `"remote"`. Remote DNS sends domain names to the SOCKS5
-server unchanged. It does not permit JSON2Proxy to apply its local private-IP
+server unchanged. It does not permit Supa Proto to apply its local private-IP
 check to names, so use it only with an upstream proxy that enforces its own
 destination policy.
 
 ## Performance trade-offs
 
 JSON encoding, message validation, and session control add CPU work, byte
-overhead, and some latency. As a result, JSON2Proxy is not intended to match
+overhead, and some latency. As a result, Supa Proto is not intended to match
 the maximum throughput of a minimal binary forwarding protocol. Its goal is a
 stable, well-bounded, and diagnosable long-lived proxy session. Evaluate it
 with load tests in the intended network environment before using it for
@@ -77,7 +77,7 @@ performance characteristics.
 
 ## Custom JSON layouts
 
-JSON2Proxy can load a restricted, static Provider descriptor to customize its
+Supa Proto can load a restricted, static Provider descriptor to customize its
 JSON field names, field order, optional metadata, and bounded maintenance
 messages. See [the Obfs Provider guide](docs/OBFS_PROVIDER.md) for the public
 descriptor format and authoring workflow.
@@ -95,7 +95,7 @@ configuring a SOCKS5 proxy.
 </p>
 
 - **Servers**: keep several servers, test their TCP latency, and import or share
-  them as `json2proxy://` links or QR codes.
+  them as `supaproto://` links or QR codes.
 - **Routing**: global proxy, direct connections for addresses in China
   (GeoIP CN), or imported rules (domain, suffix, keyword, IP range and GeoIP).
   Domain names are passed to the server unresolved whenever traffic is proxied.
@@ -115,7 +115,7 @@ The interface is available in English and Traditional Chinese. See
 
 ```text
 apps/          Native client apps (Kotlin Multiplatform), see apps/README.md
-cmd/           Go entry points for json2proxy-client and json2proxy-server
+cmd/           Go entry points for supaproto-client and supaproto-server
 internal/      Go core: config, protocol, obfs, flow control, SOCKS5, DNS, routing
 mobile/        gomobile API for the native apps (scripts/build-mobile-core.sh)
 integration/   End-to-end Go tests

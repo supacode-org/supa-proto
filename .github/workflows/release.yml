@@ -100,11 +100,11 @@ jobs:
             echo "$KEYSTORE_BASE64" | base64 --decode > "$ANDROID_KEYSTORE_PATH"
             ./gradlew :androidApp:assembleRelease "${version[@]}"
             rm -f "$ANDROID_KEYSTORE_PATH"
-            cp androidApp/build/outputs/apk/release/androidApp-release.apk "$out/JSON2Proxy-$VERSION-android.apk"
+            cp androidApp/build/outputs/apk/release/androidApp-release.apk "$out/SupaProto-$VERSION-android.apk"
           else
             echo "::warning::ANDROID_KEYSTORE_BASE64 is not set: publishing a debug-signed APK, which cannot update an earlier release in place."
             ./gradlew :androidApp:assembleDebug "${version[@]}"
-            cp androidApp/build/outputs/apk/debug/androidApp-debug.apk "$out/JSON2Proxy-$VERSION-android-debug.apk"
+            cp androidApp/build/outputs/apk/debug/androidApp-debug.apk "$out/SupaProto-$VERSION-android-debug.apk"
           fi
       - uses: actions/upload-artifact@v4
         with:
@@ -135,14 +135,14 @@ jobs:
           VERSION: ${{ needs.version.outputs.name }}
           CODE: ${{ needs.version.outputs.code }}
         run: |
-          archive="$RUNNER_TEMP/JSON2Proxy.xcarchive"
+          archive="$RUNNER_TEMP/SupaProto.xcarchive"
           xcodebuild -project apps/iosApp/iosApp.xcodeproj -scheme iosApp -configuration Release \
             -destination 'generic/platform=iOS' -archivePath "$archive" archive \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$CODE"
           mkdir -p "$RUNNER_TEMP/ipa/Payload" "$RUNNER_TEMP/out"
-          cp -R "$archive/Products/Applications/JSON2Proxy.app" "$RUNNER_TEMP/ipa/Payload/"
-          (cd "$RUNNER_TEMP/ipa" && zip -qry "$RUNNER_TEMP/out/JSON2Proxy-$VERSION-ios-unsigned.ipa" Payload)
+          cp -R "$archive/Products/Applications/SupaProto.app" "$RUNNER_TEMP/ipa/Payload/"
+          (cd "$RUNNER_TEMP/ipa" && zip -qry "$RUNNER_TEMP/out/SupaProto-$VERSION-ios-unsigned.ipa" Payload)
       - uses: actions/upload-artifact@v4
         with:
           name: ios

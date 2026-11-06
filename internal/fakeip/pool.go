@@ -8,7 +8,7 @@ import (
 	"net/netip"
 	"sync"
 
-	"json2proxy/internal/dns"
+	"supaproto/internal/dns"
 )
 
 var DefaultPrefix = netip.MustParsePrefix("198.18.0.0/15")

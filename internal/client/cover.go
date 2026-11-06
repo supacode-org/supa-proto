@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"json2proxy/internal/obfs"
-	"json2proxy/internal/protocol"
+	"supaproto/internal/obfs"
+	"supaproto/internal/protocol"
 )
 
 // Cover log levels, matching the engine's.

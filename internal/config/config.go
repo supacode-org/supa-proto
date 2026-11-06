@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"time"
 
-	"json2proxy/internal/obfs"
+	"supaproto/internal/obfs"
 )
 
 type User struct {

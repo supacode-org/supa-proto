@@ -1,4 +1,4 @@
-module json2proxy
+module supaproto
 
 go 1.24.1
 

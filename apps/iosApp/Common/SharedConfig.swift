@@ -2,13 +2,13 @@ import Foundation
 
 /// Identifiers shared by the app and the packet tunnel extension.
 enum SharedConfig {
-    static let appGroup = "group.com.json2proxy.app"
-    static let tunnelBundleID = "com.json2proxy.app.PacketTunnel"
-    static let keychainService = "com.json2proxy"
+    static let appGroup = "group.org.supacode.protomobile.app"
+    static let tunnelBundleID = "org.supacode.protomobile.app.PacketTunnel"
+    static let keychainService = "org.supacode.protomobile"
     /// Keychain account holding the engine configuration for the extension.
     static let engineConfigAccount = "engine-config"
     /// Darwin notification the extension posts after storing an engine notice.
-    static let noticeNotification = "com.json2proxy.app.notice"
+    static let noticeNotification = "org.supacode.protomobile.app.notice"
     static let noticeKindKey = "notice.kind"
     static let noticeMessageKey = "notice.message"
     /// Provider messages the app sends to read the engine's traffic stats.

@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"json2proxy/internal/flow"
-	"json2proxy/internal/protocol"
+	"supaproto/internal/flow"
+	"supaproto/internal/protocol"
 )
 
 // ErrInvalidTarget reports a target address the protocol cannot encode.

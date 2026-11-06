@@ -16,10 +16,10 @@ import (
 
 	"golang.org/x/net/dns/dnsmessage"
 
-	"json2proxy/internal/config"
-	"json2proxy/internal/engine"
-	"json2proxy/internal/router"
-	"json2proxy/internal/tun/tuntest"
+	"supaproto/internal/config"
+	"supaproto/internal/engine"
+	"supaproto/internal/router"
+	"supaproto/internal/tun/tuntest"
 )
 
 // appDNS is any address on port 53; the engine answers every DNS query.

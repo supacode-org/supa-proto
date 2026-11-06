@@ -642,12 +642,12 @@
         }
       }
     },
-    "JSON2Proxy cannot reach the network. In Settings, allow it to use WLAN and cellular data." : {
+    "Supa Proto cannot reach the network. In Settings, allow it to use WLAN and cellular data." : {
       "localizations" : {
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "JSON2Proxy 無法連上網路。請在「設定」中允許它使用無線區域網路與行動數據。"
+            "value" : "Supa Proto 無法連上網路。請在「設定」中允許它使用無線區域網路與行動數據。"
           }
         }
       }
@@ -812,12 +812,12 @@
         }
       }
     },
-    "Not a JSON2Proxy QR code or link" : {
+    "Not a Supa Proto QR code or link" : {
       "localizations" : {
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "這不是 JSON2Proxy 的 QR Code 或連結"
+            "value" : "這不是 Supa Proto 的 QR Code 或連結"
           }
         }
       }
@@ -902,12 +902,12 @@
         }
       }
     },
-    "Point the camera at a JSON2Proxy QR code" : {
+    "Point the camera at a Supa Proto QR code" : {
       "localizations" : {
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "將相機對準 JSON2Proxy 的 QR Code"
+            "value" : "將相機對準 Supa Proto 的 QR Code"
           }
         }
       }

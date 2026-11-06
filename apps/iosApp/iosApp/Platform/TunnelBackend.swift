@@ -181,12 +181,12 @@ final class TunnelBackend: VpnBackend, @unchecked Sendable {
         let settings = graph?.settings.current
         let proto = (manager.protocolConfiguration as? NETunnelProviderProtocol) ?? NETunnelProviderProtocol()
         proto.providerBundleIdentifier = SharedConfig.tunnelBundleID
-        proto.serverAddress = graph?.profiles.selected?.server ?? "JSON2Proxy"
+        proto.serverAddress = graph?.profiles.selected?.server ?? "Supa Proto"
         proto.includeAllNetworks = settings?.strictKillSwitch ?? false
         proto.excludeLocalNetworks = true
         proto.disconnectOnSleep = false
         manager.protocolConfiguration = proto
-        manager.localizedDescription = "JSON2Proxy"
+        manager.localizedDescription = "Supa Proto"
         manager.isEnabled = true
         let onDemand = settings?.autoConnect ?? false
         manager.onDemandRules = onDemand ? [NEOnDemandRuleConnect()] : nil

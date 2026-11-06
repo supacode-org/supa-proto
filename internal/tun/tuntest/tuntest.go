@@ -21,7 +21,7 @@ import (
 	"gvisor.dev/gvisor/pkg/tcpip/transport/tcp"
 	"gvisor.dev/gvisor/pkg/tcpip/transport/udp"
 
-	"json2proxy/internal/tun"
+	"supaproto/internal/tun"
 )
 
 // AppAddr is the address the simulated app sends from.

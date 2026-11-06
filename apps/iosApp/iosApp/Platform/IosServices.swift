@@ -1,5 +1,5 @@
 import Foundation
-import Json2ProxyCore
+import SupaProtoCore
 import Shared
 
 /// Non-secret app data in the App Group, readable by the extension too.
