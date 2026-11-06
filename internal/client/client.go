@@ -1,4 +1,4 @@
-// Package client opens JSON2Proxy sessions to a server. Every TCP stream and
+// Package client opens SupaProto sessions to a server. Every TCP stream and
 // every UDP association uses its own authenticated session.
 package client
 
@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"json2proxy/internal/config"
-	"json2proxy/internal/obfs"
-	"json2proxy/internal/protocol"
+	"supaproto/internal/config"
+	"supaproto/internal/obfs"
+	"supaproto/internal/protocol"
 )
 
 const writeTimeout = 30 * time.Second
@@ -88,7 +88,7 @@ type OpenError struct {
 
 func (e *OpenError) Error() string { return fmt.Sprintf("target refused: %s", e.Message) }
 
-// session is one authenticated, established JSON2Proxy connection.
+// session is one authenticated, established SupaProto connection.
 type session struct {
 	tunnel net.Conn
 	wire   *obfs.Conn

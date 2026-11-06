@@ -12,5 +12,5 @@ if [[ ! -f "$CONFIG_PATH" ]]; then
   exit 1
 fi
 
-echo "Starting JSON2Proxy client in the foreground (not installed as a service)."
-exec go run "$ROOT_DIR/cmd/json2proxy-client" -config "$CONFIG_PATH"
+echo "Starting Supa Proto client in the foreground (not installed as a service)."
+exec go run "$ROOT_DIR/cmd/supaproto-client" -config "$CONFIG_PATH"

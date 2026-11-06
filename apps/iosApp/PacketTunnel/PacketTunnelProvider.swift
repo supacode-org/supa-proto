@@ -1,4 +1,4 @@
-import Json2ProxyCore
+import SupaProtoCore
 import Network
 import os
 @preconcurrency import NetworkExtension
@@ -103,7 +103,7 @@ final class PacketTunnelProvider: NEPacketTunnelProvider {
         monitor.pathUpdateHandler = { path in
             if lastNetwork.update(path) { MobileNetworkChanged() }
         }
-        monitor.start(queue: DispatchQueue(label: "com.json2proxy.path"))
+        monitor.start(queue: DispatchQueue(label: "org.supacode.protomobile.path"))
         pathMonitor = monitor
         return nil
     }

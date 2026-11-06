@@ -8,8 +8,8 @@ import (
 	"net/netip"
 	"strings"
 
-	"json2proxy/internal/dns"
-	"json2proxy/internal/geoip"
+	"supaproto/internal/dns"
+	"supaproto/internal/geoip"
 )
 
 type Mode string

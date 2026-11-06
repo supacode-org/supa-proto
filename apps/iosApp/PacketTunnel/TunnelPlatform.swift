@@ -1,5 +1,5 @@
 import Foundation
-import Json2ProxyCore
+import SupaProtoCore
 import os
 
 /// Go core callbacks inside the extension. The Go runtime calls these from

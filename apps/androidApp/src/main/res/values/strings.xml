@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">JSON2Proxy</string>
+    <string name="app_name" translatable="false">Supa Proto</string>
 
     <!-- Actions -->
     <string name="action_save">Save</string>
@@ -110,10 +110,10 @@
     <string name="action_settings">Settings</string>
     <string name="action_cancel">Cancel</string>
     <string name="server_selected">Selected</string>
-    <string name="scanner_hint">Point the camera at a JSON2Proxy QR code</string>
+    <string name="scanner_hint">Point the camera at a Supa Proto QR code</string>
     <string name="camera_permission_disabled">Camera access is disabled</string>
     <string name="camera_unavailable">Camera unavailable</string>
-    <string name="link_not_server">Not a JSON2Proxy QR code or link</string>
+    <string name="link_not_server">Not a Supa Proto QR code or link</string>
     <string name="link_unsupported_version">This link needs a newer version of the app</string>
     <string name="link_missing_credentials">The link is missing the client ID or secret</string>
     <string name="link_invalid_server">The link has an invalid server address</string>

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.json2proxy.android"
+    namespace = "org.supacode.protomobile.android"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.json2proxy.app"
+        applicationId = "org.supacode.protomobile.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         // CI passes the release version; local builds keep these defaults.
@@ -44,7 +44,7 @@ android {
 dependencies {
     implementation(project(":shared"))
     // Go core built by scripts/build-mobile-core.sh android.
-    implementation(files("../build/json2proxy-core.aar"))
+    implementation(files("../build/supaproto-core.aar"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

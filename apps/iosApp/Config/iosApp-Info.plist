@@ -6,10 +6,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.json2proxy.server-link</string>
+			<string>org.supacode.protomobile.server-link</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>json2proxy</string>
+				<string>supaproto</string>
 			</array>
 		</dict>
 	</array>

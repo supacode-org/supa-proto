@@ -11,9 +11,9 @@ import (
 
 	"golang.org/x/net/dns/dnsmessage"
 
-	"json2proxy/internal/config"
-	"json2proxy/internal/router"
-	"json2proxy/internal/tun/tuntest"
+	"supaproto/internal/config"
+	"supaproto/internal/router"
+	"supaproto/internal/tun/tuntest"
 )
 
 var tunnelDNS = netip.MustParseAddr("172.19.0.2")

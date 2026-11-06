@@ -13,19 +13,19 @@ import (
 	"testing"
 	"time"
 
-	"json2proxy/internal/config"
-	"json2proxy/internal/engine"
-	"json2proxy/internal/router"
-	"json2proxy/internal/tun/tuntest"
+	"supaproto/internal/config"
+	"supaproto/internal/engine"
+	"supaproto/internal/router"
+	"supaproto/internal/tun/tuntest"
 )
 
-// These tests reach a real JSON2Proxy server and the public internet. They
-// only run when JSON2PROXY_REAL_CLIENT_CONFIG points at a client.json.
+// These tests reach a real SupaProto server and the public internet. They
+// only run when SUPAPROTO_REAL_CLIENT_CONFIG points at a client.json.
 func realClientConfig(t *testing.T) config.Client {
 	t.Helper()
-	path := os.Getenv("JSON2PROXY_REAL_CLIENT_CONFIG")
+	path := os.Getenv("SUPAPROTO_REAL_CLIENT_CONFIG")
 	if path == "" {
-		t.Skip("set JSON2PROXY_REAL_CLIENT_CONFIG to run against a real server")
+		t.Skip("set SUPAPROTO_REAL_CLIENT_CONFIG to run against a real server")
 	}
 	var cfg config.Client
 	if err := config.Load(path, &cfg); err != nil {

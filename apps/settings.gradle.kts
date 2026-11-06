@@ -1,4 +1,4 @@
-rootProject.name = "json2proxy-apps"
+rootProject.name = "supaproto-apps"
 
 pluginManagement {
     repositories {

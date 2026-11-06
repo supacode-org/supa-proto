@@ -1,4 +1,4 @@
-import Json2ProxyCore
+import SupaProtoCore
 import Network
 import OSLog
 
@@ -7,7 +7,7 @@ import OSLog
 /// from its own tunnel, so unbound sockets would enter the VPN.
 final class PhysicalInterfaceMonitor {
     private let monitor = NWPathMonitor(prohibitedInterfaceTypes: [.other])
-    private static let logger = Logger(subsystem: "com.json2proxy.app", category: "network")
+    private static let logger = Logger(subsystem: "org.supacode.protomobile.app", category: "network")
 
     init() {
         monitor.pathUpdateHandler = { path in
@@ -18,7 +18,7 @@ final class PhysicalInterfaceMonitor {
                 Self.logger.error("Cannot bind to \(name, privacy: .public): \(error.localizedDescription, privacy: .public)")
             }
         }
-        monitor.start(queue: DispatchQueue(label: "com.json2proxy.interface"))
+        monitor.start(queue: DispatchQueue(label: "org.supacode.protomobile.interface"))
     }
 
     deinit {

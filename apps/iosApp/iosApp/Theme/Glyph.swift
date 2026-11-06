@@ -1,10 +1,10 @@
 /// Technical notation that belongs to this app: the same in every language, never translated.
 /// Generic notation (prompt, `#`, `//`, `→`, bars and so on) comes from `TerminalGlyph`.
 enum Glyph {
-    static let command = "json2proxy"
+    static let command = "supaproto"
     static let sessionFile = "session.json"
     static let qrFile = "server.qr"
-    static let linkScheme = "json2proxy://"
+    static let linkScheme = "supaproto://"
     static let live = "live"
     static let idle = "idle"
     static let keyState = "state"

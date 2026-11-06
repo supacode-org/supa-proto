@@ -6,7 +6,7 @@ import (
 	"io"
 	"time"
 
-	"json2proxy/internal/protocol"
+	"supaproto/internal/protocol"
 )
 
 // UDPAssociation carries datagrams for many destinations over one session.

@@ -196,7 +196,7 @@ func keyedMAC(key []byte, fields ...[]byte) string {
 func clientMAC(root, providerIdentity []byte, hello Envelope) string {
 	cn, _ := UnB64(hello.CN)
 	ce, _ := UnB64(hello.CE)
-	return keyedMAC(root, []byte("JSON2Proxy/4 client hello"), []byte{Version}, providerIdentity,
+	return keyedMAC(root, []byte("SupaProto/4 client hello"), []byte{Version}, providerIdentity,
 		[]byte(hello.ClientID), int64Bytes(hello.TS), cn, ce, []byte(hello.OTP))
 }
 
@@ -206,7 +206,7 @@ func serverMAC(root, providerIdentity []byte, clientHello, serverHello Envelope)
 	sid, _ := UnB64(serverHello.SID)
 	sn, _ := UnB64(serverHello.SN)
 	se, _ := UnB64(serverHello.SE)
-	return keyedMAC(root, []byte("JSON2Proxy/4 server hello"), []byte{Version}, providerIdentity,
+	return keyedMAC(root, []byte("SupaProto/4 server hello"), []byte{Version}, providerIdentity,
 		[]byte(clientHello.ClientID), int64Bytes(clientHello.TS), cn, ce,
 		[]byte(clientHello.OTP), sid, sn, se, int64Bytes(serverHello.Exp))
 }
@@ -218,7 +218,7 @@ func EqualMAC(want, got string) bool {
 }
 
 func TOTP(root []byte, at time.Time) (string, error) {
-	key, err := hkdf.Key(sha256.New, root, []byte("JSON2Proxy/4 otp"), "JSON2Proxy/4 TOTP", 32)
+	key, err := hkdf.Key(sha256.New, root, []byte("SupaProto/4 otp"), "SupaProto/4 TOTP", 32)
 	if err != nil {
 		return "", err
 	}
@@ -372,7 +372,7 @@ func transcriptHash(clientHello, serverHello Envelope, providerIdentity []byte) 
 		return nil, err
 	}
 	h := sha256.New()
-	lpWrite(h, []byte("JSON2Proxy/4 transcript"), []byte{Version}, providerIdentity,
+	lpWrite(h, []byte("SupaProto/4 transcript"), []byte{Version}, providerIdentity,
 		[]byte(clientHello.ClientID), int64Bytes(clientHello.TS), cn, ce,
 		[]byte(clientHello.OTP), sid, sn, se, int64Bytes(serverHello.Exp))
 	return h.Sum(nil), nil
@@ -428,23 +428,23 @@ func NewSession(root, providerIdentity []byte, clientHello, serverHello Envelope
 	expand := func(label string, n int) ([]byte, error) {
 		return hkdf.Expand(sha256.New, prk, label+B64(sid), n)
 	}
-	c2sKey, err := expand("JSON2Proxy/4 c2s key", 32)
+	c2sKey, err := expand("SupaProto/4 c2s key", 32)
 	if err != nil {
 		return nil, err
 	}
-	s2cKey, err := expand("JSON2Proxy/4 s2c key", 32)
+	s2cKey, err := expand("SupaProto/4 s2c key", 32)
 	if err != nil {
 		return nil, err
 	}
-	c2sNonce, err := expand("JSON2Proxy/4 c2s nonce", 4)
+	c2sNonce, err := expand("SupaProto/4 c2s nonce", 4)
 	if err != nil {
 		return nil, err
 	}
-	s2cNonce, err := expand("JSON2Proxy/4 s2c nonce", 4)
+	s2cNonce, err := expand("SupaProto/4 s2c nonce", 4)
 	if err != nil {
 		return nil, err
 	}
-	confirm, err := expand("JSON2Proxy/4 confirm", 32)
+	confirm, err := expand("SupaProto/4 confirm", 32)
 	if err != nil {
 		return nil, err
 	}
@@ -499,7 +499,7 @@ func frameAAD(sid []byte, direction string, seq uint64) []byte {
 	var b bytes.Buffer
 	var n [8]byte
 	binary.BigEndian.PutUint64(n[:], seq)
-	lpWrite(&b, []byte("JSON2Proxy/4 frame"), []byte{Version}, []byte("frame"),
+	lpWrite(&b, []byte("SupaProto/4 frame"), []byte{Version}, []byte("frame"),
 		sid, []byte(direction), n[:])
 	return b.Bytes()
 }

@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"json2proxy/internal/stats"
+	"supaproto/internal/stats"
 )
 
 // fakeCounters stands in for a running engine's byte counters.

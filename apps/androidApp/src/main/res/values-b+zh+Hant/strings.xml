@@ -108,10 +108,10 @@
     <string name="action_settings">設定</string>
     <string name="action_cancel">取消</string>
     <string name="server_selected">目前選用</string>
-    <string name="scanner_hint">將相機對準 JSON2Proxy 的 QR Code</string>
+    <string name="scanner_hint">將相機對準 Supa Proto 的 QR Code</string>
     <string name="camera_permission_disabled">相機存取權限已關閉</string>
     <string name="camera_unavailable">無法使用相機</string>
-    <string name="link_not_server">這不是 JSON2Proxy 的 QR Code 或連結</string>
+    <string name="link_not_server">這不是 Supa Proto 的 QR Code 或連結</string>
     <string name="link_unsupported_version">這個連結需要較新版本的 App</string>
     <string name="link_missing_credentials">連結缺少用戶端 ID 或密鑰</string>
     <string name="link_invalid_server">連結中的伺服器位址無效</string>

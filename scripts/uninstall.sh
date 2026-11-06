@@ -11,19 +11,19 @@ if [[ "$(uname -s)" != "Linux" ]]; then echo "Only Linux is supported." >&2; exi
 if [[ "$EUID" -ne 0 ]]; then echo "Run as root." >&2; exit 1; fi
 if ! command -v systemctl >/dev/null; then echo "systemctl is required." >&2; exit 1; fi
 
-INSTALL_DIR="/usr/local/lib/json2proxy"
-CONFIG_DIR="/etc/json2proxy"
-STATE_DIR="/var/lib/json2proxy"
+INSTALL_DIR="/usr/local/lib/supaproto"
+CONFIG_DIR="/etc/supaproto"
+STATE_DIR="/var/lib/supaproto"
 
 if ! "$ASSUME_YES"; then
-  echo "This removes JSON2Proxy $COMPONENT service files, binary, configuration, and its default log."
+  echo "This removes Supa Proto $COMPONENT service files, binary, configuration, and its default log."
   read -r -p "Type DELETE to continue: " CONFIRM
   [[ "$CONFIRM" == "DELETE" ]] || { echo "Cancelled."; exit 0; }
 fi
 
 remove_component() {
   local component="$1"
-  local name="json2proxy-$component"
+  local name="supaproto-$component"
   systemctl disable --now "$name.service" 2>/dev/null || true
   rm -f "/etc/systemd/system/$name.service"
   rm -f "$INSTALL_DIR/$name" "$CONFIG_DIR/$name.json" "$STATE_DIR/logs/$component.log"
@@ -38,4 +38,4 @@ if [[ "$COMPONENT" == "all" ]]; then
 else
   rmdir "$INSTALL_DIR" "$CONFIG_DIR" "$STATE_DIR/logs" "$STATE_DIR" 2>/dev/null || true
 fi
-echo "JSON2Proxy $COMPONENT installation has been removed. Source directories were not touched."
+echo "Supa Proto $COMPONENT installation has been removed. Source directories were not touched."

@@ -1,4 +1,4 @@
-// Package engine ties the TUN stack to DNS, routing and the JSON2Proxy
+// Package engine ties the TUN stack to DNS, routing and the SupaProto
 // client: it answers DNS with fake IPs, routes each flow and relays it
 // directly or through the proxy. Proxied traffic never falls back to a
 // direct connection, so a broken proxy blocks traffic instead of leaking it.
@@ -13,13 +13,13 @@ import (
 	"strconv"
 	"sync"
 
-	"json2proxy/internal/client"
-	"json2proxy/internal/config"
-	"json2proxy/internal/dns"
-	"json2proxy/internal/fakeip"
-	"json2proxy/internal/router"
-	"json2proxy/internal/stats"
-	"json2proxy/internal/tun"
+	"supaproto/internal/client"
+	"supaproto/internal/config"
+	"supaproto/internal/dns"
+	"supaproto/internal/fakeip"
+	"supaproto/internal/router"
+	"supaproto/internal/stats"
+	"supaproto/internal/tun"
 )
 
 // Log levels, matching the mobile API.

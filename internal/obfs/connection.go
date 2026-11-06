@@ -18,7 +18,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"json2proxy/internal/protocol"
+	"supaproto/internal/protocol"
 )
 
 type wireField struct {

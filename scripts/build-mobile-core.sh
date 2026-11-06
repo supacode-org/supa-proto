@@ -20,18 +20,18 @@ go build -o "$BIN_DIR/gobind" golang.org/x/mobile/cmd/gobind
 export PATH="$BIN_DIR:$PATH"
 
 if [[ "$TARGET" == "ios" || "$TARGET" == "all" ]]; then
-  rm -rf "$OUT_DIR/Json2ProxyCore.xcframework"
+  rm -rf "$OUT_DIR/SupaProtoCore.xcframework"
   gomobile bind -target=ios,iossimulator -iosversion=16.0 -trimpath -ldflags="-s -w" \
-    -o "$OUT_DIR/Json2ProxyCore.xcframework" ./mobile
-  echo "Built $OUT_DIR/Json2ProxyCore.xcframework"
+    -o "$OUT_DIR/SupaProtoCore.xcframework" ./mobile
+  echo "Built $OUT_DIR/SupaProtoCore.xcframework"
 fi
 
 if [[ "$TARGET" == "android" || "$TARGET" == "all" ]]; then
   if [[ -z "${ANDROID_NDK_HOME:-}" && -z "${ANDROID_HOME:-}" ]]; then
     echo "Skipping Android: set ANDROID_HOME (with the NDK installed) or ANDROID_NDK_HOME." >&2
   else
-    gomobile bind -target=android -androidapi "$ANDROID_API" -javapkg=com.json2proxy.core -trimpath -ldflags="-s -w" \
-      -o "$OUT_DIR/json2proxy-core.aar" ./mobile
-    echo "Built $OUT_DIR/json2proxy-core.aar"
+    gomobile bind -target=android -androidapi "$ANDROID_API" -javapkg=org.supacode.protomobile.core -trimpath -ldflags="-s -w" \
+      -o "$OUT_DIR/supaproto-core.aar" ./mobile
+    echo "Built $OUT_DIR/supaproto-core.aar"
   fi
 fi

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"json2proxy/internal/protocol"
+	"supaproto/internal/protocol"
 )
 
 func TestBuiltInProvidersLoad(t *testing.T) {

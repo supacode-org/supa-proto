@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
-	"json2proxy/internal/client"
-	"json2proxy/internal/config"
+	"supaproto/internal/client"
+	"supaproto/internal/config"
 )
 
 // syncBuffer is a goroutine-safe buffer for a subprocess's output: os/exec
@@ -50,8 +50,8 @@ func (c *coverCounter) CoverBytes(up, down int) { c.up.Add(int64(up)); c.down.Ad
 func startCoverServer(t *testing.T, provider string, coverEnabled bool) (address, secret string, output *syncBuffer) {
 	t.Helper()
 	temp := t.TempDir()
-	binary := filepath.Join(temp, "json2proxy-server")
-	build(t, repoRoot(), binary, "./cmd/json2proxy-server")
+	binary := filepath.Join(temp, "supaproto-server")
+	build(t, repoRoot(), binary, "./cmd/supaproto-server")
 	secret = base64.RawURLEncoding.EncodeToString(bytes.Repeat([]byte{0x44}, 32))
 	address = reserveTCPAddress(t)
 	path := writeJSON(t, temp, "server.json", map[string]any{
