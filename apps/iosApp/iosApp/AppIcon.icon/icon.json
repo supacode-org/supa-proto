@@ -1,0 +1,34 @@
+{
+  "fill" : "system-dark",
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "Proto App Icon — BADGE.png",
+          "name" : "Proto App Icon — BADGE"
+        },
+        {
+          "fill" : "none",
+          "glass" : true,
+          "image-name" : "Proto App Icon — Glyph.png",
+          "name" : "Proto App Icon — Glyph"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

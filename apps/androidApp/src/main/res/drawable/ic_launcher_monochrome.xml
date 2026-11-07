@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed-icon layer traced from apps/iosApp/iosApp/AppIcon.icon (1024 canvas -> 70dp, centered so the badge stays in the 66dp safe zone). The system tints it, so only alpha matters. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.068359375"
+        android:scaleY="0.068359375"
+        android:translateX="19"
+        android:translateY="19">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M182,202 L334,202 A64,64 0 0 1 334,330 L182,330 A64,64 0 0 1 182,202 Z" />
+        <path
+            android:pathData="M397,465 L283.14,591 L397,717"
+            android:strokeWidth="52"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:pathData="M739,465 L852.86,591 L739,717"
+            android:strokeWidth="52"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillAlpha="0.3"
+            android:fillColor="#FFFFFF"
+            android:pathData="M436.5,591 A40,40 0 1 0 516.5,591 A40,40 0 1 0 436.5,591 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M528,591 A40,40 0 1 0 608,591 A40,40 0 1 0 528,591 Z" />
+        <path
+            android:fillAlpha="0.3"
+            android:fillColor="#FFFFFF"
+            android:pathData="M619.5,591 A40,40 0 1 0 699.5,591 A40,40 0 1 0 619.5,591 Z" />
+    </group>
+</vector>
