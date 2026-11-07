@@ -1,5 +1,10 @@
 # Supa Proto
 
+<p align="center">
+  <img src="docs/images/app-icon.png" width="128" height="128"
+       alt="Supa Proto app icon: white angle brackets around three dots, the middle dot solid and the outer two faded, with an orange badge in the top-left corner on a dark background">
+</p>
+
 Supa Proto is a proxy protocol implementation built on TCP and JSON messages.
 The client exposes a local SOCKS5 endpoint, the server connects to destination
 addresses, and the two peers exchange handshake, control, and data frames over
